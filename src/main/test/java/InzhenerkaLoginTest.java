@@ -15,6 +15,7 @@ public class InzhenerkaLoginTest {
     private static final String adminPassword = "admin123";
 
     //  9.1 Автотесты для входа на сайт
+    //  шаг 1.
     //  https://stepik.org/lesson/1663836/step/1?unit=1686829
     @Test
     void loginAndLogoutTest() {
@@ -43,6 +44,7 @@ public class InzhenerkaLoginTest {
     }
 
     //  9.2 Решаем задачи
+    //  шаг 4.
     //  https://stepik.org/lesson/1663837/step/4?unit=1686830
     @Test
     void loginAdminAndLogoutTest() {
@@ -56,6 +58,9 @@ public class InzhenerkaLoginTest {
         // --- ЧАСТЬ 1: Успешный вход ---
         $("#username").setValue(adminName);
         $(By.name("password")).setValue(adminPassword);
+
+        // Проверка входа
+        $("button[type='submit']").shouldBe(visible);
 
         // Жмем кнопку "Войти"
         $("button[type='submit']").click();
@@ -71,6 +76,7 @@ public class InzhenerkaLoginTest {
     }
 
     //  9.2 Решаем задачи
+    //  шаг 4.
     //  https://stepik.org/lesson/1663837/step/4?unit=1686830
     @Test
     void loginWithSpaceUsernameAndEmptyPasswordTest() {
@@ -96,5 +102,36 @@ public class InzhenerkaLoginTest {
 
         //  !!! И только теперь кнопка "Войти" будет видимой.
         $(byText("Войти")).shouldBe(visible);
+    }
+
+    //  9.3 Решаем задачи
+    //  шаг 3.
+    //  https://stepik.org/lesson/1663838/step/3?unit=1686831
+    @Test
+    void loginWithSpaceUsernameAndEmptyPasswordTest2() {
+        Configuration.browserSize = "1920x1080";
+
+        // 1. Открываем сайт
+        open("http://qa-stand-login.inzhenerka.tech/login");
+
+        // --- ЧАСТЬ 3: Вход с пустыми полями (РЕШЕНИЕ) ---
+
+        // Мы вводим пустые строки, чтобы симулировать пустой ввод
+        $("#username").setValue(" ");
+        $(By.name("password")).setValue("");
+
+        // Пытаемся войти
+        $("button[type='submit']").click();
+
+        // Проверяем, что мы все еще на странице входа
+        // Если бы нас пустило, эта проверка упала бы
+        //  !!! См. предыдущий метод
+
+        //  <a href="/login" class="btn btn-primary w-100">Попробовать снова</a>
+        $(By.linkText("Попробовать снова")).shouldBe(visible);
+        $(By.linkText("Попробовать снова")).click();
+
+        //  <button type="submit" class="btn btn-primary w-100 loginClass">Войти</button>
+        $("button[type='submit']").shouldBe(visible);
     }
 }
