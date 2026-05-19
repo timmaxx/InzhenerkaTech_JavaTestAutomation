@@ -1,6 +1,8 @@
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -33,12 +35,25 @@ public class LoginPage extends BaseTest {
     }
 
     public void login() {
+        String userName = usernameField.getValue();
+
+        loginButton.shouldBe(visible);
+
         // Нажатие кнопки входа
         loginButton.click();
+
+        // Мы ищем элемент body или заголовок, который содержит приветствие
+        $("body").shouldHave(text("Привет, " + userName));
+
+        logoutButton.shouldBe(visible);
     }
 
     public void logout() {
+        logoutButton.shouldBe(visible);
+
         // Нажатие кнопки выхода
         logoutButton.click();
+
+        loginButton.shouldBe(visible);
     }
 }
